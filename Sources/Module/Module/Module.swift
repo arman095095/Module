@@ -1,29 +1,22 @@
 import UIKit
 
-public protocol ModuleProtocol: AnyObject {
-    var view: UIViewController { get }
-    var input: AnyObject? { get }
-    var output: AnyObject? { get set }
-    var transition: Transitioning? { get set }
-}
-
 public final class Module<Input: Any, Output: Any> {
     public var view: UIViewController
     
-    public var _input: Input? {
-        set { inputObjc = newValue as? AnyObject }
-        get { inputObjc as? Input }
+    public var input: Input? {
+        set { _input = newValue as? AnyObject }
+        get { _input as? Input }
     }
     
-    public var _output: Output? {
-        set { outputObjc = newValue as? AnyObject }
-        get { outputObjc as? Output  }
+    public var output: Output? {
+        set { _output = newValue as? AnyObject }
+        get { _output as? Output  }
     }
     
-    private weak var inputObjc: AnyObject?
-    private weak var outputObjc: AnyObject? {
+    private weak var _input: AnyObject?
+    private weak var _output: AnyObject? {
         didSet {
-            completion?(_output)
+            completion?(output)
         }
     }
     
@@ -36,26 +29,6 @@ public final class Module<Input: Any, Output: Any> {
                 completion: @escaping (Output?) -> ()) {
         self.view = view
         self.completion = completion
-        self._input = input
-    }
-}
-
-extension Module: ModuleProtocol {
-    public var output: AnyObject? {
-        get {
-            outputObjc
-        }
-        set {
-            outputObjc = newValue
-        }
-    }
-    
-    public var input: AnyObject? {
-        get {
-            inputObjc
-        }
-        set {
-            inputObjc = newValue
-        }
+        self.input = input
     }
 }

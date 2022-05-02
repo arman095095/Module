@@ -1,5 +1,11 @@
 import UIKit
 
+public protocol ModuleProtocol: AnyObject {
+    var inputObj: AnyObject? { get set }
+    var outputObj: AnyObject? { get set }
+    var transition: Transitioning? { get set }
+}
+
 public final class Module<Input: Any, Output: Any> {
     public var view: UIViewController
     
@@ -30,5 +36,17 @@ public final class Module<Input: Any, Output: Any> {
         self.view = view
         self.completion = completion
         self.input = input
+    }
+}
+
+extension Module: ModuleProtocol {
+    public var inputObj: AnyObject? {
+        set { _input = newValue }
+        get { _input }
+    }
+    
+    public var outputObj: AnyObject? {
+        set { _output = newValue }
+        get { _output }
     }
 }

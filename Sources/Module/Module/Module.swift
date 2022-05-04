@@ -1,6 +1,7 @@
 import UIKit
 
 public protocol ModuleProtocol: AnyObject {
+    var view: UIViewController { get }
     var inputObj: AnyObject? { get set }
     var outputObj: AnyObject? { get set }
     var transition: Transitioning? { get set }
